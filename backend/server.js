@@ -39,12 +39,22 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
   .map(o => o.trim());
 
 app.use(cors({
-  origin: isProd ? false : allowedOrigins, // Disable cross-origin calls in prod
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Disposition"]
 }));
+
 
 // Body parser with size limit
 app.use(express.json({ limit: "10mb" }));
