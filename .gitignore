@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains secrets)
+.env
+.env.local
+.env.*.local
+
+# Uploaded files (handled by Cloudinary in production)
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build output
+frontend/build/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
