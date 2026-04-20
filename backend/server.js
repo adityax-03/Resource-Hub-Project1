@@ -101,7 +101,7 @@ if (isProd) {
   app.use(express.static(buildPath));
 
   // SPA catch-all — serve index.html for all non-API routes
-  app.get("*", (req, res) => {
+  app.use((req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
 } else {
