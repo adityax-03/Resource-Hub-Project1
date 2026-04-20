@@ -54,6 +54,7 @@ function UploadResource() {
       setResourceName(""); setDescription(""); setFile(null);
       const fileInput = document.getElementById("file-input");
       if (fileInput) fileInput.value = "";
+      setTimeout(() => navigate('/resources'), 1500);
     } catch (error) {
       setToast({ message: error.response?.data?.message || "Upload failed", type: "error", show: true });
     } finally {

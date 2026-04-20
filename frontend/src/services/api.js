@@ -6,9 +6,7 @@ import axios from "axios";
  * In development: uses REACT_APP_API_URL (defaults to http://localhost:5001)
  * In production:  uses relative URLs (same origin — served from Express)
  */
-const API_BASE = process.env.NODE_ENV === "production"
-  ? ""
-  : (process.env.REACT_APP_API_URL || "http://localhost:5001");
+const API_BASE = "https://resource-hub-project1.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE,
