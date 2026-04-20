@@ -98,17 +98,22 @@ app.use("/api", (req, res) => {
 // ── Serve React Frontend in Production ──
 if (isProd) {
   const buildPath = path.join(__dirname, "..", "frontend", "build");
+
   app.use(express.static(buildPath));
 
-  // SPA catch-all — serve index.html for all non-API routes
-  app.use((req, res) => {
+  // Only non-API routes handled by React
+  app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
 } else {
   app.get("/", (req, res) => {
-    res.json({ success: true, message: "API Running — Development Mode" });
+    res.json({
+      success: true,
+      message: "API Running — Development Mode",
+    });
   });
 }
+
 
 // ── Global Error Handler (must be last) ──
 app.use(errorHandler);
