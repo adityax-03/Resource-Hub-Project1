@@ -56,55 +56,8 @@ function Resources() {
 
   const handleDownload = (resource) => {
     const token = localStorage.getItem("token");
-    // Always use the backend download endpoint — it handles both local and Cloudinary files
-    const url = `${API_BASE}/api/resource/download/${resource._id}`;
-    // Open in new tab with auth — for direct download we need a different approach
-    // Use fetch to get the file and trigger download
-    fetch(url, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        if (!response.ok) throw new Error("Download failed");
-        // Check if it's a redirect (Cloudinary)
-        if (response.redirected) {
-          window.open(response.url, "_blank");
-          return null;
-        }
-
-        let filename = resource.resourceName || "download";
-        const contentDisposition = response.headers.get("content-disposition");
-        if (contentDisposition && contentDisposition.includes("filename=")) {
-          const match = contentDisposition.match(/filename="?([^";]+)"?/);
-          if (match && match[1]) {
-            filename = match[1];
-          }
-        } else {
-          // Fallback to inferring from URLs
-          const pathStr = resource.fileUrl || resource.filePath || resource.cloudinaryId || "";
-          const match = pathStr.match(/\.[0-9a-z]+$/i);
-          if (match && !filename.toLowerCase().endsWith(match[0].toLowerCase())) {
-            filename += match[0];
-          }
-        }
-        
-        return response.blob().then(blob => ({ blob, filename }));
-      })
-      .then(result => {
-        if (!result) return;
-        const { blob, filename } = result;
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(blobUrl);
-      })
-      .catch(err => {
-        console.error("Download error:", err);
-        setToast({ message: "Download failed", type: "error", show: true });
-      });
+    const url = `${API_BASE}/api/resource/download/${resource._id}?token=${token}`;
+    window.open(url, "_blank");
   };
 
   const getUploaderName = (resource) => {
