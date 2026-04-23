@@ -36,7 +36,7 @@ function Welcome() {
           </div>
 
           <p className="hint">
-            Free forever plan · No credit card required
+            Free forever plan
           </p>
 
         </div>
